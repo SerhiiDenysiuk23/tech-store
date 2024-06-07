@@ -17,6 +17,11 @@ export default function Home() {
     dispatch(fetchCategoryListAction())
     dispatch(fetchBrandListAction())
     dispatch(fetchProductListAction())
+
+    fetch("/api/getEnviroments")
+      .then(res => res.json())
+      .then(r => {
+        console.log(r)})
   }, []);
 
   return (
