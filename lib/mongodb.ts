@@ -1,4 +1,4 @@
-import { connect, connection } from 'mongoose';
+import { connect, connection, Connection } from 'mongoose';
 
 const MONGODB_URI = process.env.MONGODB_URI;
 
@@ -6,39 +6,29 @@ if (!MONGODB_URI) {
   throw new Error('Please define the MONGODB_URI environment variable inside .env.local');
 }
 
-let mongoosePromise: Promise<typeof import('mongoose')>;
+let cachedPromise: Promise<Connection>;
 
-// Расширяем глобальный объект для хранения обещания клиента в режиме разработки
 const globalWithMongoose = global as typeof globalThis & {
-  _mongooseClientPromise: Promise<typeof import('mongoose')>
+  _mongooseClientPromise: Promise<Connection>
 };
 
-// Функция для подключения к базе данных
 const connectToDatabase = async () => {
-  try {
-    // Проверка состояния подключения
-    if (connection.readyState >= 1) {
-      return connection;
-    }
-
-    // В режиме разработки используем глобальную переменную для сохранения обещания
-    if (process.env.NODE_ENV === 'development') {
-      if (!globalWithMongoose._mongooseClientPromise) {
-        globalWithMongoose._mongooseClientPromise = connect(MONGODB_URI);
-      }
-      mongoosePromise = globalWithMongoose._mongooseClientPromise;
-    } else {
-      // В режиме продакшн создаем новое подключение при каждом вызове
-      mongoosePromise = connect(MONGODB_URI);
-    }
-
-    await mongoosePromise;
-
-    console.log('Connected to MongoDB');
-  } catch (error) {
-    console.error('Failed to connect to MongoDB', error);
-    throw error;
+  if (connection.readyState >= 1) {
+    return connection;
   }
+
+  if (process.env.NODE_ENV === 'development') {
+    if (!globalWithMongoose._mongooseClientPromise) {
+      globalWithMongoose._mongooseClientPromise = connect(MONGODB_URI).then(() => connection);
+    }
+    cachedPromise = globalWithMongoose._mongooseClientPromise;
+  } else {
+    cachedPromise = connect(MONGODB_URI).then(() => connection);
+  }
+
+  await cachedPromise;
+  console.log('Connected to MongoDB');
+  return connection;
 };
 
 export default connectToDatabase;
