@@ -18,10 +18,10 @@ export const deleteCookie = (name: string) => {
 }
 
 
-export const postRequest = async (route: string, data: any) => {
+export const postRequest = async (route: string, data: any, method?: 'POST' | 'PUT' = 'POST') => {
   const token = getCookie(TOKEN_NAME)
   const response = await fetch(`/api/${route}`, {
-    method: 'POST',
+    method,
     headers: token
       ? {
         'Content-Type': 'application/json',

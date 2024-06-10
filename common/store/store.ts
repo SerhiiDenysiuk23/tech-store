@@ -9,20 +9,24 @@ import {brandEpics} from "@/common/store/brand/brand.epic";
 import brandSlice from "@/common/store/brand/brand.slice";
 import productSlice from "@/common/store/product/product.slice";
 import {productEpics} from "@/common/store/product/product.epic";
+import orderSlice from "@/common/store/order/order.slice";
+import {orderEpics} from "@/common/store/order/order.epic";
 
 const epicMiddleware = createEpicMiddleware();
 const rootEpic = combineEpics(
   userEpics,
   categoryEpics,
   brandEpics,
-  productEpics
+  productEpics,
+  orderEpics
 );
 
 const rootReducer = combineReducers({
   user: userSlice.reducer,
   category: categorySlice.reducer,
   brand: brandSlice.reducer,
-  product: productSlice.reducer
+  product: productSlice.reducer,
+  order: orderSlice.reducer
 })
 
 export const store = configureStore({

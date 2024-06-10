@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
+import {useEffect, useState} from 'react';
 import {useRouter} from "next/router";
 import {deleteCookie, getCookie, TOKEN_NAME} from "@/common/api/core";
 import {useAppDispatch, useAppSelector} from "@/common/hooks/useAppDispatch";
@@ -30,7 +30,7 @@ const Header = () => {
     }
   };
 
-
+  console.log(currentUser)
 
   useEffect(() => {
     setIsLoggedIn(!!token)
@@ -42,37 +42,34 @@ const Header = () => {
 
   return (
     <header className="header">
-      <div className="logo">
-        <Link href="/">Tech Store</Link>
-      </div>
+      <section className="container">
+        <div className="logo">
+          <Link href="/">Tech Store</Link>
+        </div>
 
-      <nav className="nav">
-        <form onSubmit={handleSearch} className={"searchForm"}>
-          <input
-            type="text"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder="Search products..."
-          />
-          <button type="submit">Search</button>
-        </form>
+        <nav className="nav">
 
-        <Link href="/">Home</Link>
-        <Link href="/">Catalog</Link>
-        {
-          (currentUser && currentUser.isAdmin)
-          && <Link href="/admin/admin-panel">Add Product</Link>
-        }
+          <Link href="/">Home</Link>
+          <Link href="/order">Basket</Link>
+          {
+            (currentUser && currentUser.isAdmin)
+            && <Link href="/admin/admin-panel">Add Product</Link>
+          }
+          {
+            currentUser &&
+            <Link href="/user-page">Cabinet</Link>
+          }
 
-        {!isLoggedIn ? (
-          <>
-            <Link href="/register">Register</Link>
-            <Link href="/login">Login</Link>
-          </>
-        ) : (
-          <button onClick={handleLogout}>Logout</button>
-        )}
-      </nav>
+          {!isLoggedIn ? (
+            <>
+              <Link href="/register">Register</Link>
+              <Link href="/login">Login</Link>
+            </>
+          ) : (
+            <button onClick={handleLogout}>Logout</button>
+          )}
+        </nav>
+      </section>
     </header>
   );
 };

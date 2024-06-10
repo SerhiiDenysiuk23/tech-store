@@ -1,0 +1,98 @@
+.orderForm {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  background-color: #fff;
+}
+
+.formGroup {
+  margin-bottom: 15px;
+
+  label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+  }
+
+  input, select {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+}
+
+.products {
+  margin-bottom: 20px;
+}
+
+
+.productCard {
+  display: flex;
+  align-items: center;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  padding: 10px;
+  margin-bottom: 10px;
+
+  img {
+    max-width: 100px;
+    margin-right: 15px;
+  }
+
+  .details {
+    h3 {
+      margin: 0 0 5px;
+    }
+
+    p {
+      margin: 0 0 10px;
+    }
+
+    .quantity {
+      display: flex;
+      align-items: center;
+
+      button {
+        width: 30px;
+        height: 30px;
+        border: none;
+        background-color: #f0f0f0;
+        cursor: pointer;
+        font-size: 18px;
+        line-height: 0;
+
+        &:hover {
+          background-color: #ddd;
+        }
+      }
+
+      span {
+        margin: 0 10px;
+        font-size: 16px;
+      }
+    }
+  }
+}
+
+
+.deliveryDetails {
+  .formGroup {
+    margin-bottom: 15px;
+
+    label {
+      display: block;
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+
+    input {
+      width: 100%;
+      padding: 8px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+  }
+}

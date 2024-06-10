@@ -1,7 +1,7 @@
 import Head from "next/head";
 import Header from "@/common/components/Header";
 import Footer from "@/common/components/Footer";
-import ProductListElem from "@/common/components/admin/ProductListElem";
+import ProductListElem from "@/common/components/ProductListElem";
 import React, {useEffect, useLayoutEffect} from "react";
 import {useAppDispatch, useAppSelector} from "@/common/hooks/useAppDispatch";
 import {fetchCategoryListAction} from "@/common/store/category/category.slice";
@@ -14,14 +14,12 @@ export default function Home() {
 
 
   useEffect(() => {
+    if (product.productList.length)
+      return
+
     dispatch(fetchCategoryListAction())
     dispatch(fetchBrandListAction())
     dispatch(fetchProductListAction())
-
-    fetch("/api/getEnviroments")
-      .then(res => res.json())
-      .then(r => {
-        console.log(r)})
   }, []);
 
   return (

@@ -5,18 +5,18 @@ import {
   fetchCurrentUserAction,
   initialFails,
   set_fails_user,
-  set_token
+  set_token, editUserAction
 } from "@/common/store/user/user.slice";
 import {from, map, mergeMap, Observable} from "rxjs";
 import {combineEpics, Epic, ofType} from "redux-observable";
 import {getRequest, postRequest, setCookie, TOKEN_NAME} from "@/common/api/core";
-import {GET_USER, GET_USER_BY_TOKEN, LOGIN, REGISTER} from "@/common/api/apiRoutes";
+import {GET_USER, USER, LOGIN, REGISTER} from "@/common/api/apiRoutes";
 
 
 const fetchCurrentUserEpic: Epic = (action$: any) => {
   return action$.pipe(
     ofType(fetchCurrentUserAction.type),
-    mergeMap(() => from(getRequest(GET_USER_BY_TOKEN)).pipe(
+    mergeMap(() => from(getRequest(USER)).pipe(
       map(response => {
         if (response.user){
           return fetch_current_user(response.user)
@@ -64,4 +64,22 @@ const CreateUserEpic: Epic = (action$: any) => {
   )
 }
 
-export const userEpics = combineEpics(fetchCurrentUserEpic, fetchTokenEpic, CreateUserEpic)
+const EditUserEpic: Epic = (action$: any) => {
+  return action$.pipe(
+    ofType(editUserAction.type),
+    mergeMap((action: any) => from(postRequest(USER, action.payload, "PUT")).pipe(
+      map(response => {
+
+        if (response.message)
+          return set_fails_user({...initialFails, email: response.message})
+
+        const user = response?.user
+        if (user){
+          return fetch_current_user(user)
+        }
+      })
+    ))
+  )
+}
+
+export const userEpics = combineEpics(fetchCurrentUserEpic, fetchTokenEpic, CreateUserEpic, EditUserEpic)

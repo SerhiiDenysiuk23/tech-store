@@ -4,11 +4,11 @@ import {getRequest, postRequest} from "@/common/api/core";
 
 import {
   create_product,
-  createProductAction,
-  fetch_product_list, fetchProductListAction,
+  createProductAction, fetch_current_product,
+  fetch_product_list, fetchCurrentProductAction, fetchProductListAction,
   set_fail_product
 } from "@/common/store/product/product.slice";
-import {CREATE_PRODUCT, GET_PRODUCT_LIST} from "@/common/api/apiRoutes";
+import {CREATE_PRODUCT, GET_PRODUCT, GET_PRODUCT_LIST} from "@/common/api/apiRoutes";
 
 
 const fetchProductListEpic: Epic = (action$: any) => {
@@ -20,6 +20,20 @@ const fetchProductListEpic: Epic = (action$: any) => {
           return fetch_product_list(response.products)
         }
         return fetch_product_list([])
+      })
+    ))
+  )
+}
+
+const fetchCurrentProductEpic: Epic = (action$: any) => {
+  return action$.pipe(
+    ofType(fetchCurrentProductAction.type),
+    mergeMap((action: any) => from(getRequest(GET_PRODUCT(action.payload))).pipe(
+      map(response => {
+        if (response.product) {
+          return fetch_current_product(response.product)
+        }
+        return set_fail_product(response.message)
       })
     ))
   )
@@ -40,4 +54,4 @@ const createProductEpic: Epic = (action$: any) => {
   )
 }
 
-export const productEpics = combineEpics(fetchProductListEpic, createProductEpic)
+export const productEpics = combineEpics(fetchProductListEpic, createProductEpic, fetchCurrentProductEpic)

@@ -13,6 +13,9 @@ $font-color: #333;
 @import "components/header";
 @import "components/footer";
 @import "pages/admin-panel";
+@import "pages/product-page";
+@import "pages/order-page";
+@import "pages/order-list-page";
 
 
 
@@ -43,7 +46,24 @@ ul{
 }
 
 .container{
-  max-width: 1400px;
+  max-width: 1200px;
   width: 100%;
   margin: auto;
+}
+
+main{
+  padding: 2em 0;
+}
+
+.buy-button{
+  width: 100px;
+  height: 30px;
+  background: $primary-color;
+  border-radius: 12px;
+  color: white;
+  border: none;
+  cursor: pointer;
+  &:hover{
+    opacity: .7;
+  }
 }

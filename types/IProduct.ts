@@ -14,7 +14,8 @@ export interface IProduct extends Document {
 }
 
 export interface ProductState{
-  productList: IProduct[]
+  productList: IProduct[],
+  currentProduct: IProduct | null,
   fail: string
 }
 

@@ -10,13 +10,13 @@ import {fetchBrandListAction} from "@/common/store/brand/brand.slice";
 import ManageBrands from "@/common/components/admin/ManageBrands";
 import ManageProducts from "@/common/components/admin/ManageProducts";
 import {fetchProductListAction} from "@/common/store/product/product.slice";
-import ProductListElem from "@/common/components/admin/ProductListElem";
+import ProductListElem from "@/common/components/ProductListElem";
 
 const AddProductPage = () => {
   const router = useRouter();
   const {currentUser} = useAppSelector(state => state.rootReducer.user)
   const dispatch = useAppDispatch()
-  const {product} = useAppSelector(state => state.rootReducer)
+  const {product, brand, category} = useAppSelector(state => state.rootReducer)
 
 
   useEffect(() => {
@@ -26,26 +26,36 @@ const AddProductPage = () => {
   }, [currentUser]);
 
   useLayoutEffect(() => {
-    dispatch(fetchCategoryListAction())
-    dispatch(fetchBrandListAction())
-    dispatch(fetchProductListAction())
+    if (!product.productList.length)
+      dispatch(fetchCategoryListAction())
+
+    if (!brand.brandList.length)
+      dispatch(fetchBrandListAction())
+
+    if (!category.categoryList.length)
+      dispatch(fetchProductListAction())
   }, []);
 
   return (
     <>
       <Header/>
       <main className={"admin-panel"}>
-        <div className={"admin-panel__forms"}>
-          <ManageProducts/>
-          <ManageCategories/>
-          <ManageBrands/>
-        </div>
-        <div className={"product-grid"}>
-          {
-            product.productList.map(item => <ProductListElem key={item._id as string} product={item} isShowAll={true}/>)
+        <section className={'container'}>
+          <div className={"admin-panel__forms"}>
+            <ManageProducts/>
+            <ManageCategories/>
+            <ManageBrands/>
+          </div>
+        </section>
+        <section className="container">
+          <div className={"product-grid"}>
+            {
+              product.productList.map(item => <ProductListElem key={item._id as string} product={item}
+                                                               isShowAll={true}/>)
 
-          }
-        </div>
+            }
+          </div>
+        </section>
       </main>
       <Footer/>
     </>

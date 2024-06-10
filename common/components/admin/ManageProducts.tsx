@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import {useAppDispatch, useAppSelector} from "@/common/hooks/useAppDispatch";
 import {IProduct, IProductToCreate} from "@/types/IProduct";
 import {createProductAction} from "@/common/store/product/product.slice";
-import ProductListElem from "@/common/components/admin/ProductListElem";
+import ProductListElem from "@/common/components/ProductListElem";
 
 const initProduct: IProductToCreate = {
   name: '',
@@ -32,12 +32,12 @@ const ManageProducts = () => {
   return (
     <div className="manage manage__multi-value">
       <form onSubmit={handleProductSubmit} className="auth-form">
-        <h1>Add Product</h1>
+        <h1>Add Id</h1>
         <input
           type="text"
           value={productCreate.name}
           onChange={(e) => setProductCreate(prevState => ({...prevState, name: e.target.value}))}
-          placeholder="Product Name"
+          placeholder="Id Name"
           required
         />
         <input
@@ -50,20 +50,20 @@ const ManageProducts = () => {
         <textarea
           value={productCreate.description}
           onChange={(e) => setProductCreate(prevState => ({...prevState, description: e.target.value}))}
-          placeholder="Product Description"
+          placeholder="Id Description"
           required
         ></textarea>
         <textarea
           value={productCreate.characteristics}
           onChange={(e) => setProductCreate(prevState => ({...prevState, characteristics: e.target.value}))}
-          placeholder="Product Characteristics"
+          placeholder="Id Characteristics"
           required
         ></textarea>
         <input
           type="number"
           value={productCreate.price || ""}
           onChange={(e) => setProductCreate(prevState => ({...prevState, price: Number(e.target.value)}))}
-          placeholder="Product Price"
+          placeholder="Id Price"
           required
         />
 
@@ -100,10 +100,10 @@ const ManageProducts = () => {
           type="number"
           value={productCreate.stock || ""}
           onChange={(e) => setProductCreate(prevState => ({...prevState, stock: Number(e.target.value)}))}
-          placeholder="Product Stock"
+          placeholder="Id Stock"
           required
         />
-        <button type="submit">Add Product</button>
+        <button type="submit">Add Id</button>
       </form>
     </div>
   );

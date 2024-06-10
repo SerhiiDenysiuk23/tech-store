@@ -6,6 +6,6 @@ const CategorySchema: Schema = new Schema({
   name: { type: String, required: true },
 });
 
-const Category: Model<ICategory> = models.Category || model<ICategory>('Category', CategorySchema);
+const Category: Model<ICategory> = models?.Category || model<ICategory>('Category', CategorySchema);
 
 export default Category;
