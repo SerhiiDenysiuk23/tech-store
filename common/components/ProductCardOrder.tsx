@@ -28,9 +28,9 @@ const ProductCardOrder: React.FC<Props> = ({productToOrder}) => {
         <h3>{productToOrder.product.name}</h3>
         <p>{productToOrder.product.price * productToOrder.quantity}</p>
         <div className={'quantity'}>
-          <button onClick={handleDecrement}>-</button>
+          <button type={"button"} onClick={handleDecrement}>-</button>
           <span>{productToOrder.quantity}</span>
-          <button onClick={handleIncrement}>+</button>
+          <button type={"button"} onClick={handleIncrement}>+</button>
         </div>
       </div>
     </div>

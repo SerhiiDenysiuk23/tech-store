@@ -1,6 +1,7 @@
 import React, {useEffect} from 'react';
 import {useAppDispatch, useAppSelector} from "@/common/hooks/useAppDispatch";
 import {fetchOrderListAction} from "@/common/store/order/order.slice";
+import {IOrder} from "@/types/IOrder";
 
 const OrderList = () => {
 
@@ -13,24 +14,24 @@ const OrderList = () => {
 
   return (
     <div className={'orderList'}>
-      <h2>Список заказов</h2>
+      <h2>Order list</h2>
       {orders.length === 0 ? (
-        <p>Заказы отсутствуют.</p>
+        <p>No orders.</p>
       ) : (
         orders.map(order => (
           <div key={order._id as string} className={'order'}>
             <div className={'orderHeader'}>
-              <span>Заказ #{order._id as string}</span>
+              <span>Order #{order._id as string}</span>
               <span className={'status'}>{order.status}</span>
             </div>
             <div className={'orderDetails'}>
               <div className={'recipient'}>
-                <p><strong>Получатель:</strong> {order.recipientName} {order.recipientSurname}</p>
-                <p><strong>Город:</strong> {order.recipientCity}</p>
-                <p><strong>Телефон:</strong> {order.phoneNumber}</p>
+                <p><strong>Recipient:</strong> {order.recipientName} {order.recipientSurname}</p>
+                <p><strong>City:</strong> {order.recipientCity}</p>
+                <p><strong>Phone number:</strong> {order.phoneNumber}</p>
               </div>
               <div className={'products'}>
-                <p><strong>Продукты:</strong></p>
+                <p><strong>Products:</strong></p>
                 {order.products.map((item, index) => (
                   <div key={index} className={'product'}>
                     <p>{item.product.name} x {item.quantity} - {item.product.price} грн</p>
@@ -38,32 +39,32 @@ const OrderList = () => {
                 ))}
               </div>
               <div className={'total'}>
-                <p><strong>Итого:</strong> {order.total} грн</p>
+                <p><strong>Total:</strong> {order.total} грн</p>
               </div>
               <div className={"delivery"}>
-                <p><strong>Метод доставки:</strong> {order.deliveryMethod}</p>
+                <p><strong>Delivery method:</strong> {order.deliveryMethod}</p>
                 {order.deliveryMethod === 'post' && (
-                  <p><strong>Почтовая служба:</strong> {order.postalService}</p>
+                  <p><strong>Post Service:</strong> {order.postalService}</p>
                 )}
                 {order.deliveryMethod === 'post' && order.postalService === 'nova_poshta' && (
-                  <p><strong>Отделение Новой Почты:</strong> {order.recipientNovaPoshtaBranch}</p>
+                  <p><strong>Nova Post branch:</strong> {order.recipientNovaPoshtaBranch}</p>
                 )}
                 {order.deliveryMethod === 'post' && order.postalService === 'meest' && (
-                  <p><strong>Отделение Meest:</strong> {order.recipientMeestBranch}</p>
+                  <p><strong>Meest branch:</strong> {order.recipientMeestBranch}</p>
                 )}
                 {order.deliveryMethod === 'post' && order.postalService === 'ukrposhta' && (
                   <>
-                    <p><strong>Улица:</strong> {order.recipientStreet}</p>
-                    <p><strong>Дом:</strong> {order.recipientHouse}</p>
-                    <p><strong>Квартира:</strong> {order.recipientApartment}</p>
-                    <p><strong>Почтовый индекс:</strong> {order.recipientPostalCode}</p>
+                    <p><strong>Street:</strong> {order.recipientStreet}</p>
+                    <p><strong>House:</strong> {order.recipientHouse}</p>
+                    <p><strong>Apartment:</strong> {order.recipientApartment}</p>
+                    <p><strong>Post index:</strong> {order.recipientPostalCode}</p>
                   </>
                 )}
                 {order.deliveryMethod === 'courier' && (
                   <>
-                    <p><strong>Улица:</strong> {order.recipientStreet}</p>
-                    <p><strong>Дом:</strong> {order.recipientHouse}</p>
-                    <p><strong>Квартира:</strong> {order.recipientApartment}</p>
+                    <p><strong>Street:</strong> {order.recipientStreet}</p>
+                    <p><strong>House:</strong> {order.recipientHouse}</p>
+                    <p><strong>Apartment:</strong> {order.recipientApartment}</p>
                   </>
                 )}
               </div>

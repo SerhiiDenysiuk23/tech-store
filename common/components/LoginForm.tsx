@@ -44,8 +44,9 @@ const LoginForm = () => {
           required
         />
       </div>
-      <button type="submit">Login</button>
       {fails.invalidLogin && <p>{fails.invalidLogin}</p>}
+
+      <button type="submit">Login</button>
     </form>
   );
 };

@@ -53,7 +53,11 @@ const Header = () => {
           <Link href="/order">Basket</Link>
           {
             (currentUser && currentUser.isAdmin)
-            && <Link href="/admin/admin-panel">Add Product</Link>
+            &&
+            <>
+              <Link href={"/admin/order-list"}>Orders</Link>
+              <Link href="/admin/admin-panel">Manage</Link>
+            </>
           }
           {
             currentUser &&
@@ -66,7 +70,7 @@ const Header = () => {
               <Link href="/login">Login</Link>
             </>
           ) : (
-            <button onClick={handleLogout}>Logout</button>
+            <Link href={'/'} onClick={handleLogout}>Logout</Link>
           )}
         </nav>
       </section>

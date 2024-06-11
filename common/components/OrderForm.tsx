@@ -21,6 +21,7 @@ const orderInit: IOrderToCreate = {
 const OrderForm = () => {
   const [order, setOrder] = useState(orderInit)
   const [isSuccess, setIsSuccess] = useState(false)
+  const [isProductsEmpty, setIsProductEmpty] = useState(false)
 
   const {productsToOrder} = useAppSelector(state => state.rootReducer.order)
   const {currentUser} = useAppSelector(state => state.rootReducer.user)
@@ -106,7 +107,11 @@ const OrderForm = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
 
-    console.log(order)
+    if (!order.products.length){
+      setIsProductEmpty(true)
+      return
+    }
+
     postRequest(CREATE_ORDER, order).then(res => {
       setIsSuccess(res.isSuccess)
     })
@@ -125,7 +130,7 @@ const OrderForm = () => {
         {
           !productsToOrder.length &&
           <div className={'productCard'}>
-            <div className={'details'}>
+            <div className={`details ${isProductsEmpty ? "error" : ""}`}>
               No Items
             </div>
           </div>

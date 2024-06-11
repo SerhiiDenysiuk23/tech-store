@@ -32,12 +32,12 @@ const ManageProducts = () => {
   return (
     <div className="manage manage__multi-value">
       <form onSubmit={handleProductSubmit} className="auth-form">
-        <h1>Add Id</h1>
+        <h1>Add Product</h1>
         <input
           type="text"
           value={productCreate.name}
           onChange={(e) => setProductCreate(prevState => ({...prevState, name: e.target.value}))}
-          placeholder="Id Name"
+          placeholder="Name"
           required
         />
         <input
