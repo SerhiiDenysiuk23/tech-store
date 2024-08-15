@@ -1,9 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import ProductCardOrder from "@/common/components/ProductCardOrder";
-import DeliveryDetails from "@/common/components/DeliveryDetails";
 import {useAppDispatch, useAppSelector} from "@/common/hooks/useAppDispatch";
-import {postRequest} from "@/common/api/core";
-import {CREATE_ORDER} from "@/common/api/apiRoutes";
 import {IUserToEdit} from "@/types/IUser";
 import {editUserAction} from "@/common/store/user/user.slice";
 

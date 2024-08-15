@@ -22,7 +22,7 @@ const OrderSchema: Schema<IOrder> = new Schema({
   recipientNovaPoshtaBranch: {type: String},
   recipientMeestBranch: {type: String},
   status: {type: String, enum: ['pending', 'processed', 'shipped', 'delivered', 'canceled'], default: 'pending'},
-});
+},{ timestamps: true });
 
 const Order: Model<IOrder> = models.Order || model<IOrder>('Order', OrderSchema);
 

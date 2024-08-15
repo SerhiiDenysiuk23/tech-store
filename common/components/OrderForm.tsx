@@ -4,7 +4,7 @@ import {useAppSelector} from "@/common/hooks/useAppDispatch";
 import ProductCardOrder from "@/common/components/ProductCardOrder";
 import {IOrderToCreate} from "@/types/IOrder";
 import {postRequest} from "@/common/api/core";
-import {CREATE_ORDER} from "@/common/api/apiRoutes";
+import {ORDERS} from "@/common/api/apiRoutes";
 
 
 const orderInit: IOrderToCreate = {
@@ -112,7 +112,7 @@ const OrderForm = () => {
       return
     }
 
-    postRequest(CREATE_ORDER, order).then(res => {
+    postRequest(ORDERS, order).then(res => {
       setIsSuccess(res.isSuccess)
     })
   }
