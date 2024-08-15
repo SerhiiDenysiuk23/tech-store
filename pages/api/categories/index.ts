@@ -1,10 +1,9 @@
-import Product from "@/models/Product";
 import {NextApiRequest, NextApiResponse} from "next";
 import connectToDatabase from "@/lib/mongodb";
 import jwt from "jsonwebtoken";
 import User from "@/models/User";
-import {IProductToCreate} from "@/types/IProduct";
-import {ObjectId} from "mongodb";
+import Category from "@/models/Category";
+import Product from "@/models/Product";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   await connectToDatabase();
@@ -30,34 +29,30 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
     switch (req.method) {
       case "GET": {
-        const products = await Product.find({}).populate("category").populate("brand");
-        return res.status(200).json({products: products});
+        const categories = await Category.find({ name: { $ne: 'No category' } });
+        return res.status(200).json({categories});
 
       }
       case "POST": {
 
         if (user && user.isAdmin) {
-          const product = req.body as IProductToCreate;
-          const newProduct = new Product({...product});
-          await newProduct.save();
-          const populatedProduct = await Product.findById(newProduct._id).populate("category").populate("brand");
-          return res.status(201).json({product: populatedProduct});
+          const name = req.body;
+          const newCategory = new Category({name});
+          await newCategory.save();
+          return res.status(201).json({category: newCategory});
         } else {
           return res.status(403).json({message: 'User have not permission'});
         }
+
       }
       case "PUT": {
         if (user && user.isAdmin) {
-          const {_id, ...product} = req.body as IProductToCreate;
-          const updatedProduct = await Product.findByIdAndUpdate(_id, {
-            ...product,
-            category: ObjectId.isValid(product.category) ? new ObjectId(product.category) : product.category,
-            brand: ObjectId.isValid(product.brand) ? new ObjectId(product.brand) : product.brand,
-          }, {new: true}).populate("category").populate("brand");
-          if (!updatedProduct) {
+          const {_id, name} = req.body;
+          const updatedCategory = await Category.findByIdAndUpdate(_id, {name}, {new: true});
+          if (!updatedCategory) {
             return res.status(404).json({message: 'Product not found'});
           }
-          return res.status(200).json({product: updatedProduct});
+          return res.status(200).json({category: updatedCategory});
         } else {
           return res.status(403).json({message: 'User have not permission'});
         }
@@ -65,10 +60,19 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       case "DELETE": {
         if (user && user.isAdmin) {
           const _id = req.body as string;
-          const updatedProduct = await Product.findByIdAndDelete(_id);
-          if (!updatedProduct) {
-            return res.status(404).json({message: 'Product not found'});
+
+          const updatedCategory = await Category.findByIdAndDelete(_id);
+          if (!updatedCategory) {
+            return res.status(404).json({message: 'Category not found'});
           }
+
+          let noCategory = await Category.findOne({ name: 'No category' });
+          if (!noCategory) {
+            noCategory = new Category({ name: 'No category' });
+            await noCategory.save();
+          }
+          await Product.updateMany({ category: _id }, { category: noCategory._id });
+
           return res.status(200).json({isDeleted: true});
         } else {
           return res.status(403).json({message: 'User have not permission'});

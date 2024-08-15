@@ -1,6 +1,10 @@
 import React, {useState} from 'react';
 import {useAppDispatch, useAppSelector} from "@/common/hooks/useAppDispatch";
-import {createCategoryAction, set_fail_category} from "@/common/store/category/category.slice";
+import {createCategoryAction, editCategoryAction, set_fail_category} from "@/common/store/category/category.slice";
+import Link from "next/link";
+import {deleteProductAction, editProductAction} from "@/common/store/product/product.slice";
+import productToProductCreate from "@/common/components/helpers/productToProductCreate";
+import CategoryListElemEditable from "@/common/components/admin/CategoryListElemEditable";
 
 const ManageCategories = () => {
   const dispatch = useAppDispatch();
@@ -10,11 +14,10 @@ const ManageCategories = () => {
 
   const handleCategorySubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!categoryName){
+    if (!categoryName) {
       dispatch(set_fail_category("Field is required"))
       return
-    }
-    else if (fail){
+    } else if (fail) {
       dispatch(set_fail_category(""))
     }
 
@@ -37,9 +40,7 @@ const ManageCategories = () => {
       </form>
       <ul>
         {
-          categoryList.map(item => (
-            <li key={item.name}>{item.name}</li>
-          ))
+          categoryList.map(item => <CategoryListElemEditable key={item._id as string} item={item}/>)
         }
       </ul>
     </div>

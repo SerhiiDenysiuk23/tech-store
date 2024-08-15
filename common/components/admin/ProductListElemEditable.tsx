@@ -12,6 +12,9 @@ const ProductListElemEditable: React.FC<{ data: IProduct }> = ({data}) => {
   const dispatch = useAppDispatch()
 
   const handleOk = () => {
+    if (product.category === 'No category')
+      return
+
     dispatch(editProductAction(product))
     setIsEditMode(prevState => !prevState)
     setProduct(productToProductCreate(data))
@@ -29,8 +32,8 @@ const ProductListElemEditable: React.FC<{ data: IProduct }> = ({data}) => {
     if (isEditMode) {
       setProduct({
         ...product,
-        category: category.categoryList.find(item => item.name === product.category)!._id as string,
-        brand: brand.brandList.find(item => item.name === product.brand)!._id as string
+        category: category.categoryList.find(item => item.name === product.category)?._id as string ?? data.category.name,
+        brand: brand.brandList.find(item => item.name === product.brand)?._id as string ?? data.brand.name
       })
     }
   }, [isEditMode]);
@@ -58,7 +61,13 @@ const ProductListElemEditable: React.FC<{ data: IProduct }> = ({data}) => {
               />
               <div className="product-card__meta">
                 <select
-                  value={brand.brandList.find(item => item.name === product.brand)?.name ?? product.brand}
+                  style={product.brand === 'No brand' ? {borderColor: "red"} : {}}
+                  value={
+                    brand.brandList.find(item => item.name === product.brand)?.name ??
+                    product.brand === 'No brand'
+                      ? ""
+                      : product.brand
+                  }
                   onChange={(e) => setProduct(prevState => ({...prevState, brand: e.target.value}))}
                   required
                 >
@@ -70,11 +79,17 @@ const ProductListElemEditable: React.FC<{ data: IProduct }> = ({data}) => {
                   ))}
                 </select>
                 <select
-                  value={category.categoryList.find(item => item.name === product.category)?.name ?? product.category}
+                  style={product.category === 'No category' ? {borderColor: "red"} : {}}
+                  value={
+                    category.categoryList.find(item => item.name === product.category)?.name ??
+                    product.category === 'No category'
+                      ? ""
+                      : product.category
+                  }
                   onChange={(e) => setProduct(prevState => ({...prevState, category: e.target.value}))}
                   required
                 >
-                  <option value="" disabled>Select Category</option>
+                  <option value="" disabled>Category</option>
                   {category.categoryList.map((item) => (
                     <option key={item.name} value={(item._id as string)}>
                       {item.name}
@@ -126,7 +141,7 @@ const ProductListElemEditable: React.FC<{ data: IProduct }> = ({data}) => {
           </>
       }
 
-      <div className="manage-section">
+      <div className="manage-buttons">
         {
           isEditMode
             ? <>

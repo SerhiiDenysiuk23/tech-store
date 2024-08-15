@@ -67,3 +67,10 @@ main{
     opacity: .7;
   }
 }
+
+.manage-buttons{
+  margin-top: auto;
+  display: flex;
+  justify-content: space-between;
+  gap: 1em;
+}
