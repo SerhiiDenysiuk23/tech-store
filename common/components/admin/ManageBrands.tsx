@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import {useAppDispatch, useAppSelector} from "@/common/hooks/useAppDispatch";
 import {createBrandAction, set_fail_brand} from "@/common/store/brand/brand.slice";
+import BrandListElemEditable from "@/common/components/admin/BrandListElemEditable";
 
 const ManageBrands = () => {
   const dispatch = useAppDispatch();
@@ -38,9 +39,7 @@ const ManageBrands = () => {
 
       <ul>
         {
-          brandList.map(item => (
-            <li key={item.name}>{item.name}</li>
-          ))
+          brandList.map(item => <BrandListElemEditable item={item}/>)
         }
       </ul>
     </div>

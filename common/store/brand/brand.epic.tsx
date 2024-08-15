@@ -1,10 +1,10 @@
 import {from, map, mergeMap} from "rxjs";
 import {combineEpics, Epic, ofType} from "redux-observable";
 import {getRequest, postRequest} from "@/common/api/core";
-import {CREATE_BRAND, GET_BRAND_LIST} from "@/common/api/apiRoutes";
+import {BRANDS} from "@/common/api/apiRoutes";
 import {
   create_brand,
-  createBrandAction,
+  createBrandAction, delete_brand, deleteBrandAction, edit_brand, editBrandAction,
   fetch_brand_list,
   fetchBrandListAction,
   set_fail_brand
@@ -14,7 +14,7 @@ import {
 const fetchBrandListEpic: Epic = (action$: any) => {
   return action$.pipe(
     ofType(fetchBrandListAction.type),
-    mergeMap(() => from(getRequest(GET_BRAND_LIST)).pipe(
+    mergeMap(() => from(getRequest(BRANDS)).pipe(
       map(response => {
         if (response.brands) {
           return fetch_brand_list(response.brands)
@@ -28,7 +28,7 @@ const fetchBrandListEpic: Epic = (action$: any) => {
 const createBrandEpic: Epic = (action$: any) => {
   return action$.pipe(
     ofType(createBrandAction.type),
-    mergeMap((action: any) => from(postRequest(CREATE_BRAND, action.payload)).pipe(
+    mergeMap((action: any) => from(postRequest(BRANDS, action.payload)).pipe(
       map(response => {
         if (response.message)
           return set_fail_brand(response.message)
@@ -41,4 +41,38 @@ const createBrandEpic: Epic = (action$: any) => {
   )
 }
 
-export const brandEpics = combineEpics(fetchBrandListEpic, createBrandEpic)
+const editBrandEpic: Epic = (action$: any) => {
+  return action$.pipe(
+    ofType(editBrandAction.type),
+    mergeMap((action: any) => from(postRequest(BRANDS, action.payload, 'PUT')).pipe(
+      map(response => {
+
+        if (response.message)
+          return set_fail_brand(response.message)
+
+        return edit_brand(response.brand)
+      })
+    ))
+  )
+}
+
+const deleteBrandEpic: Epic = (action$: any) => {
+  return action$.pipe(
+    ofType(deleteBrandAction.type),
+    mergeMap((action: any) => from(postRequest(BRANDS, action.payload, "DELETE")).pipe(
+      map(response => {
+        if (response.isDeleted) {
+          return delete_brand(action.payload)
+        }
+        return set_fail_brand(response.message)
+      })
+    ))
+  )
+}
+
+export const brandEpics = combineEpics(
+  fetchBrandListEpic,
+  createBrandEpic,
+  editBrandEpic,
+  deleteBrandEpic
+  )
