@@ -52,7 +52,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           const {_id, name} = req.body;
           const updatedBrand = await Brand.findByIdAndUpdate(_id, {name}, {new: true});
           if (!updatedBrand) {
-            return res.status(404).json({message: 'Product not found'});
+            return res.status(404).json({message: 'Brand not found'});
           }
           return res.status(200).json({brand: updatedBrand});
         } else {
