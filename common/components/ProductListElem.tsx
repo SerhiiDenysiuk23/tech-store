@@ -1,18 +1,12 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {IProduct} from "@/types/IProduct";
-import {useAppSelector} from "@/common/hooks/useAppDispatch";
 import Link from "next/link";
 
 const ProductListElem: React.FC<{ product: IProduct, isShowAll?: boolean }> = ({product, isShowAll}) => {
-
-  useEffect(() => {
-
-
-  }, []);
-
   return (
     <Link href={`/product/${product._id}`}>
       <div className="product-card">
+
         <img src={product.imageUrl} alt={product.name} className="product-card__image"/>
         <div className="product-card__details">
           <h2 className="product-card__name">{product.name}</h2>

@@ -32,7 +32,7 @@ const ManageProducts = () => {
   return (
     <div className="manage manage__multi-value">
       <form onSubmit={handleProductSubmit} className="auth-form">
-        <h1>Add Product</h1>
+        <h1>Add Product</h1><br/>
         <input
           type="text"
           value={productCreate.name}
@@ -50,20 +50,20 @@ const ManageProducts = () => {
         <textarea
           value={productCreate.description}
           onChange={(e) => setProductCreate(prevState => ({...prevState, description: e.target.value}))}
-          placeholder="Id Description"
+          placeholder="Description"
           required
         ></textarea>
         <textarea
           value={productCreate.characteristics}
           onChange={(e) => setProductCreate(prevState => ({...prevState, characteristics: e.target.value}))}
-          placeholder="Id Characteristics"
+          placeholder="Characteristics"
           required
         ></textarea>
         <input
           type="number"
           value={productCreate.price || ""}
           onChange={(e) => setProductCreate(prevState => ({...prevState, price: Number(e.target.value)}))}
-          placeholder="Id Price"
+          placeholder="Price"
           required
         />
 
@@ -100,10 +100,10 @@ const ManageProducts = () => {
           type="number"
           value={productCreate.stock || ""}
           onChange={(e) => setProductCreate(prevState => ({...prevState, stock: Number(e.target.value)}))}
-          placeholder="Id Stock"
+          placeholder="Stock"
           required
         />
-        <button type="submit">Add Id</button>
+        <button type="submit">Add Product</button>
       </form>
     </div>
   );

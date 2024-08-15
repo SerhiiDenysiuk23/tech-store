@@ -18,11 +18,20 @@ const productSlice = createSlice({
     fetch_current_product: (state, action: PayloadAction<IProduct | null>) => {
       return {...state, currentProduct: action.payload}
     },
+    edit_product: (state, action: PayloadAction<IProduct>) => {
+      return {
+        ...state,
+        productList: state.productList.map(item => item._id == action.payload._id ? {...item, ...action.payload} : item)
+      }
+    },
+    delete_product: (state, action: PayloadAction<string>) => {
+      return {...state, productList: state.productList.filter(item => item._id != action.payload)}
+    },
     set_fail_product: (state, action: PayloadAction<string>) => {
       return {...state, fail: action.payload}
     },
     create_product: (state, action: PayloadAction<IProduct>) => {
-      return {...state, productList: [action.payload,...state.productList]}
+      return {...state, productList: [action.payload, ...state.productList]}
     }
   }
 })
@@ -30,10 +39,15 @@ const productSlice = createSlice({
 export const fetchProductListAction = createAction("fetchProductList");
 export const fetchCurrentProductAction = createAction<string>("fetchCurrentProduct");
 export const createProductAction = createAction<IProductToCreate>("createProduct");
+export const editProductAction = createAction<IProductToCreate>("editProduct");
+export const deleteProductAction = createAction<string>("deleteProduct");
+
 export default productSlice;
 export const {
   fetch_product_list,
   set_fail_product,
   create_product,
-  fetch_current_product
+  fetch_current_product,
+  delete_product,
+  edit_product
 } = productSlice.actions

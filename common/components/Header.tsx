@@ -30,8 +30,6 @@ const Header = () => {
     }
   };
 
-  console.log(currentUser)
-
   useEffect(() => {
     setIsLoggedIn(!!token)
     if (token)

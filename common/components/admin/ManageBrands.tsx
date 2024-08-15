@@ -25,7 +25,7 @@ const ManageBrands = () => {
   return (
     <div className="manage manage__single-value">
       <form onSubmit={handleCategorySubmit} className="auth-form">
-        <h1>Add Brand</h1>
+        <h1>Add Brand</h1><br/>
         <input
           type="text"
           value={brandName}

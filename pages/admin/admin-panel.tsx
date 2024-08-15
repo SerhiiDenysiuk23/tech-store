@@ -11,13 +11,13 @@ import ManageBrands from "@/common/components/admin/ManageBrands";
 import ManageProducts from "@/common/components/admin/ManageProducts";
 import {fetchProductListAction} from "@/common/store/product/product.slice";
 import ProductListElem from "@/common/components/ProductListElem";
+import ProductListElemEditable from "@/common/components/admin/ProductListElemEditable";
 
 const AddProductPage = () => {
   const router = useRouter();
   const {currentUser} = useAppSelector(state => state.rootReducer.user)
   const dispatch = useAppDispatch()
   const {product, brand, category} = useAppSelector(state => state.rootReducer)
-
 
   useEffect(() => {
     if (currentUser && currentUser.isAdmin)
@@ -50,8 +50,7 @@ const AddProductPage = () => {
         <section className="container">
           <div className={"product-grid"}>
             {
-              product.productList.map(item => <ProductListElem key={item._id as string} product={item}
-                                                               isShowAll={true}/>)
+              product.productList.map(item => <ProductListElemEditable key={item._id as string} data={item}/>)
 
             }
           </div>

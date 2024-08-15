@@ -2,8 +2,6 @@
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   grid-template-rows: 1fr;
-  //display: flex;
-  //flex-wrap: wrap;
   gap: 20px;
 }
 
@@ -30,8 +28,7 @@
 
   &__image {
     width: 100%;
-    height: auto;
-    max-height: 300px;
+    height: 300px;
     object-fit: contain;
     border-radius: 12px;
   }
@@ -43,11 +40,12 @@
   }
 
   &__name {
-    font-size: 18px;
+    font-size: 16px;
     margin: 8px 0;
     font-weight: 700;
     color: #333;
     height: 80px;
+    overflow: hidden;
   }
 
   &__price {
@@ -61,6 +59,9 @@
     margin: 8px 0;
     color: #888;
     font-size: 14px;
+    select{
+      width: 100%;
+    }
   }
 
   &__stock {
@@ -98,4 +99,11 @@
     scrollbar-color: #888 transparent;
 
   }
+}
+
+.manage-section{
+  margin-top: auto;
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
 }
