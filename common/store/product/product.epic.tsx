@@ -1,4 +1,4 @@
-import {from, map, mergeMap} from "rxjs";
+import {catchError, from, map, mergeMap, of, retry, retryWhen} from "rxjs";
 import {combineEpics, Epic, ofType} from "redux-observable";
 import {getRequest, postRequest} from "@/common/api/core";
 
@@ -11,19 +11,32 @@ import {
 import {PRODUCTS, GET_PRODUCT} from "@/common/api/apiRoutes";
 
 
+const MAX_RETRIES = 5;
+const RETRY_DELAY = 1000; // задержка между попытками в миллисекундах
+
 const fetchProductListEpic: Epic = (action$: any) => {
   return action$.pipe(
     ofType(fetchProductListAction.type),
-    mergeMap(() => from(getRequest(PRODUCTS)).pipe(
-      map(response => {
-        if (response.products) {
-          return fetch_product_list(response.products)
-        }
-        return fetch_product_list([])
-      })
-    ))
-  )
-}
+    mergeMap(() =>
+      from(getRequest(PRODUCTS)).pipe(
+        map(response => {
+          if (response.products) {
+            return fetch_product_list(response.products);
+          }
+          return fetch_product_list([]);
+        }),
+        retry({
+          count: MAX_RETRIES,
+          delay: RETRY_DELAY,
+        }),
+        catchError(error => {
+          console.error('Failed to fetch product list after retries:', error);
+          return of(set_fail_product(error));
+        })
+      )
+    )
+  );
+};
 
 const fetchCurrentProductEpic: Epic = (action$: any) => {
   return action$.pipe(
