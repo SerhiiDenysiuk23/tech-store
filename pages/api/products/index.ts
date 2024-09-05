@@ -28,9 +28,23 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     }
 
 
+    const retryGetRequest = async (attempts: number) => {
+      for (let i = 0; i < attempts; i++) {
+        try {
+          return await Product.find({}).populate("category").populate("brand");
+        } catch (error) {
+          console.log(`GET request failed on attempt ${i + 1}:`, error);
+          if (i === attempts - 1) {
+            throw new Error('GET request failed after multiple attempts');
+          }
+        }
+      }
+    };
+
+
     switch (req.method) {
       case "GET": {
-        const products = await Product.find({}).populate("category").populate("brand");
+        const products = await retryGetRequest(5);
         return res.status(200).json({products: products});
 
       }
@@ -82,7 +96,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     }
   } catch (error) {
     console.log(error)
-    return res.status(500).json({message: error});
+    return res.status(500).json({message: 'Internal Server Error'});
   }
 
 

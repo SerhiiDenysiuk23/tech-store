@@ -51,7 +51,5 @@ export const getRequest = async (route: string) => {
         'Content-Type': 'application/json',
       },
   });
-
-
   return response.json()
 }
